@@ -7,7 +7,28 @@ import { Component } from '@angular/core';
 })
 export class CardDisplayComponent {
   title = "Card Drawn";
-  card_image = getCardCover();
+  card_image: string;
+  currentShoe: Shoe;
+  currentShoeIndex: number
+
+  public constructor()  {
+    this.card_image = getCardCover();
+    this.currentShoeIndex = 0;
+    this.currentShoe = new Shoe(1);
+  }
+
+  public nextCard(): void  {
+    //delay(1000);
+    this.card_image = "../assets/" + this.currentShoe.getCardImageUrl(this.currentShoeIndex);
+    this.currentShoeIndex++;
+    //this.nextCard();
+  }
+  // blur 'Begin' button
+}
+
+function delay(ms: number)  {
+  return new Promise(resolve => {setTimeout(resolve, ms);
+  });
 }
 
 function getCardCover(): string  {
@@ -24,25 +45,45 @@ class Card  {
     this.suit = suit;
     this.cardImageUrl = cardImageUrl;
   }
+
+  public getCardValue(): string  {
+    return this.value;
+  }
+
+  public getCardSuit(): string  {
+    return this.suit;
+  }
+
+  public getCardImageUrl(): string  {
+    return this.cardImageUrl;
+  }
 }
 
 class Shoe  {
   private runningCount: number;
-  private numOfDecks: number = 0;
-  public cardStack: Card[] = [];
+  //private numOfDecks: number;
+  private cardStack: Card[] = [];
 
   public constructor(numOfDecks: number)  {
     this.runningCount = 0;
-    this.numOfDecks = numOfDecks;
+    //this.numOfDecks = numOfDecks;
     this.cardStack = createShuffledCardStack(numOfDecks);
+  }
+
+  public getRunningCount(): number  {
+    return this.runningCount;
+  }
+
+  public getCardImageUrl(index: number): string  {
+    return this.cardStack[index].getCardImageUrl();
   }
 
 }
 
 function createShuffledCardStack(numOfDecks: number): any {
-  let shoeStack: any = createCardStack(numOfDecks)
+  let shoeStack: any = createCardStack(numOfDecks);
   //shuffle(shoeStack);
-  return shoeStack
+  return shoeStack;
 }
   
 function createCardStack(numOfDecks: number): any  {
@@ -51,10 +92,10 @@ function createCardStack(numOfDecks: number): any  {
     for (let j = 2; j < 10; j++) {
       // ASCII value used by adding 48 and converting to char
       // value and suit are used to identify appropriate image in file 'card_images'
-      cardStack.push(new Card((j+48).toString(), 'S', "card_images/PlayingCard_" + (j+48).toString() + 'S' + ".GIF"))
-      cardStack.push(new Card((j+48).toString(), 'H', "card_images/PlayingCard_" + (j+48).toString() + 'H' + ".GIF"))
-      cardStack.push(new Card((j+48).toString(), 'D', "card_images/PlayingCard_" + (j+48).toString() + 'D' + ".GIF"))
-      cardStack.push(new Card((j+48).toString(), 'C', "card_images/PlayingCard_" + (j+48).toString() + 'C' + ".GIF"))
+      cardStack.push(new Card((j).toString(), 'S', "card_images/PlayingCard_" + (j).toString() + 'S' + ".GIF"))
+      cardStack.push(new Card((j).toString(), 'H', "card_images/PlayingCard_" + (j).toString() + 'H' + ".GIF"))
+      cardStack.push(new Card((j).toString(), 'D', "card_images/PlayingCard_" + (j).toString() + 'D' + ".GIF"))
+      cardStack.push(new Card((j).toString(), 'C', "card_images/PlayingCard_" + (j).toString() + 'C' + ".GIF"))
     }
   
     let faceCards: string[] = ['T', 'J', 'Q', 'K', 'A'] // value of 10 is included in faceCards[] as 'T'
@@ -65,8 +106,8 @@ function createCardStack(numOfDecks: number): any  {
       cardStack.push(new Card(faceCards[j], 'H', "card_images/PlayingCard_" + faceCards[j] + 'H' + ".GIF"))
       cardStack.push(new Card(faceCards[j], 'D', "card_images/PlayingCard_" + faceCards[j] + 'D' + ".GIF"))
       cardStack.push(new Card(faceCards[j], 'C', "card_images/PlayingCard_" + faceCards[j] + 'C' + ".GIF"))
-      return cardStack
+      
     }
   }
-    
+  return cardStack;
 }
