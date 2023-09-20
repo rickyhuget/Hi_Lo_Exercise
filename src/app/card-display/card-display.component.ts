@@ -17,13 +17,22 @@ export class CardDisplayComponent {
     this.currentShoe = new Shoe(1);
   }
 
-  public nextCard(): void  {
-    //delay(1000);
+  async beginDealing()  {
+    // blur 'Begin' button
+    let numOfCardsToBeDealt: number = (this.currentShoe.getNumOfDecks() * 40)
+    for (let i = 0; i < numOfCardsToBeDealt; i++)  {
+      await delay(1000);
+      this.dealNextCard();
+    }
+    await delay(1000);
+    this.card_image = getCardCover();
+  }
+
+  public dealNextCard(): void  {
     this.card_image = "../assets/" + this.currentShoe.getCardImageUrl(this.currentShoeIndex);
     this.currentShoeIndex++;
-    //this.nextCard();
+    //this.dealNextCard();
   }
-  // blur 'Begin' button
 }
 
 function delay(ms: number)  {
@@ -61,17 +70,21 @@ class Card  {
 
 class Shoe  {
   private runningCount: number;
-  //private numOfDecks: number;
+  private numOfDecks: number;
   private cardStack: Card[] = [];
 
   public constructor(numOfDecks: number)  {
     this.runningCount = 0;
-    //this.numOfDecks = numOfDecks;
+    this.numOfDecks = numOfDecks;
     this.cardStack = createShuffledCardStack(numOfDecks);
   }
 
   public getRunningCount(): number  {
     return this.runningCount;
+  }
+
+  public getNumOfDecks(): number  {
+    return this.numOfDecks;
   }
 
   public getCardImageUrl(index: number): string  {
