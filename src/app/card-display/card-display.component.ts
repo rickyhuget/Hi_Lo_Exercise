@@ -21,7 +21,7 @@ export class CardDisplayComponent {
     // blur 'Begin' button
     let numOfCardsToBeDealt: number = (this.currentShoe.getNumOfDecks() * 40)
     for (let i = 0; i < numOfCardsToBeDealt; i++)  {
-      await delay(1000);
+      await delay(500);
       this.dealNextCard();
     }
     await delay(1000);
@@ -31,7 +31,6 @@ export class CardDisplayComponent {
   public dealNextCard(): void  {
     this.card_image = "../assets/" + this.currentShoe.getCardImageUrl(this.currentShoeIndex);
     this.currentShoeIndex++;
-    //this.dealNextCard();
   }
 }
 
@@ -93,13 +92,21 @@ class Shoe  {
 
 }
 
-function createShuffledCardStack(numOfDecks: number): any {
-  let shoeStack: any = createCardStack(numOfDecks);
-  //shuffle(shoeStack);
+function shuffle(array: any[]): any[]  {
+  for (let i = array.length - 1; i > 0; i--) { 
+    const j = Math.floor(Math.random() * (i + 1)); 
+    [array[i], array[j]] = [array[j], array[i]]; 
+  } 
+  return array; 
+}; 
+
+function createShuffledCardStack(numOfDecks: number): Card[] {
+  let shoeStack: Card[] = createCardStack(numOfDecks);
+  shuffle(shoeStack);
   return shoeStack;
 }
   
-function createCardStack(numOfDecks: number): any  {
+function createCardStack(numOfDecks: number): Card[]  {
   const cardStack: Card[] = [];
   for (let i = 0; i < numOfDecks; i++)  {
     for (let j = 2; j < 10; j++) {
