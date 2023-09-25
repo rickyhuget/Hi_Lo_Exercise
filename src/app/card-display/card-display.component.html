@@ -1,5 +1,12 @@
-<h3>{{title}}</h3>
+<link rel="stylesheet" href="card-display.component.css">
 
-<img src={{card_image}} />
+<body>
+    <h2>{{title}}</h2>
 
-<button onclick="">Begin</button>
+    <img src={{card_image}} />
+
+    <button id="BeginButton" (click)="beginDealing()">Begin</button>
+    <button disabled id="newDeckButton" (click)="createNewDeck()">New Deck</button>
+
+    <h3>{{runningCountDisplay}}</h3>
+</body>
